@@ -16,8 +16,9 @@ namespace JumpListExplorer
         {
             InitializeComponent();
             Icon = Resources.JumpListExplorerIcon;
+            listViewMain.ListViewItemSorter = new ColumnSorter { SortColumn = columnHeaderDate.Index, Order = SortOrder.Descending };
             LoadApplicationUserModelIDs();
-            listViewMain.ListViewItemSorter = new ColumnSorter();
+            listViewMain.Sort();
             listViewMain.ColumnClick += (s, e) => { ((ColumnSorter)listViewMain.ListViewItemSorter).HandleClick(listViewMain, e.Column); };
         }
 
@@ -66,7 +67,7 @@ namespace JumpListExplorer
                     }
 
                     lvi.Tag = new Model(aumid, item);
-                    lvi.SubItems.Add(item.DateModified?.ToString("yyyy/MM/dd HH:mm:ss"));
+                    lvi.SubItems.Add(item.DateAccessed?.ToString("yyyy/MM/dd HH:mm:ss"));
                     lvi.SubItems.Add(item.SIGDN_NORMALDISPLAY);
                     lvi.SubItems.Add(item.SIGDN_DESKTOPABSOLUTEPARSING);
                 }

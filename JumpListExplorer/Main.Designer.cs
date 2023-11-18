@@ -39,8 +39,8 @@
             listViewMain = new System.Windows.Forms.ListView();
             columnHeaderAumid = new System.Windows.Forms.ColumnHeader();
             columnHeaderDate = new System.Windows.Forms.ColumnHeader();
-            columnHeaderPath = new System.Windows.Forms.ColumnHeader();
             columnHeaderName = new System.Windows.Forms.ColumnHeader();
+            columnHeaderPath = new System.Windows.Forms.ColumnHeader();
             contextMenuStripMain = new System.Windows.Forms.ContextMenuStrip(components);
             removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -128,18 +128,18 @@
             // 
             // columnHeaderDate
             // 
-            columnHeaderDate.Text = "Last Modified Date";
+            columnHeaderDate.Text = "Last Accessed Date";
             columnHeaderDate.Width = 140;
-            // 
-            // columnHeaderPath
-            // 
-            columnHeaderPath.Text = "Path";
-            columnHeaderPath.Width = 300;
             // 
             // columnHeaderName
             // 
             columnHeaderName.Text = "Name";
             columnHeaderName.Width = 150;
+            // 
+            // columnHeaderPath
+            // 
+            columnHeaderPath.Text = "Path";
+            columnHeaderPath.Width = 300;
             // 
             // contextMenuStripMain
             // 
