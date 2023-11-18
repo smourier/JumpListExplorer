@@ -67,11 +67,13 @@ namespace JumpListExplorer
 
                     lvi.Tag = new Model(aumid, item);
                     lvi.SubItems.Add(item.DateModified?.ToString("yyyy/MM/dd HH:mm:ss"));
+                    lvi.SubItems.Add(item.SIGDN_NORMALDISPLAY);
                     lvi.SubItems.Add(item.SIGDN_DESKTOPABSOLUTEPARSING);
                 }
             }
 
             listViewMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            columnHeaderName.Width = 120;
             Text = $"{WinformsUtilities.ApplicationName} - {listViewMain.Items.Count} items";
         }
 

@@ -40,6 +40,7 @@
             columnHeaderAumid = new System.Windows.Forms.ColumnHeader();
             columnHeaderDate = new System.Windows.Forms.ColumnHeader();
             columnHeaderPath = new System.Windows.Forms.ColumnHeader();
+            columnHeaderName = new System.Windows.Forms.ColumnHeader();
             contextMenuStripMain = new System.Windows.Forms.ContextMenuStrip(components);
             removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -107,7 +108,7 @@
             // 
             // listViewMain
             // 
-            listViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderAumid, columnHeaderDate, columnHeaderPath });
+            listViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderAumid, columnHeaderDate, columnHeaderName, columnHeaderPath });
             listViewMain.ContextMenuStrip = contextMenuStripMain;
             listViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
             listViewMain.FullRowSelect = true;
@@ -134,6 +135,11 @@
             // 
             columnHeaderPath.Text = "Path";
             columnHeaderPath.Width = 300;
+            // 
+            // columnHeaderName
+            // 
+            columnHeaderName.Text = "Name";
+            columnHeaderName.Width = 150;
             // 
             // contextMenuStripMain
             // 
@@ -225,5 +231,6 @@
         private System.Windows.Forms.ToolStripMenuItem runFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAllDeletedFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
     }
 }
