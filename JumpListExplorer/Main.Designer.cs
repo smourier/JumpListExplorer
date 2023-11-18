@@ -38,10 +38,16 @@
             aboutWindowsJumpListExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             listViewMain = new System.Windows.Forms.ListView();
             columnHeaderAumid = new System.Windows.Forms.ColumnHeader();
+            columnHeaderDate = new System.Windows.Forms.ColumnHeader();
             columnHeaderPath = new System.Windows.Forms.ColumnHeader();
-            imageListIcons = new System.Windows.Forms.ImageList(components);
             contextMenuStripMain = new System.Windows.Forms.ContextMenuStrip(components);
             removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            openLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            runFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            removeAllDeletedFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            imageListIcons = new System.Windows.Forms.ImageList(components);
             menuStripMain.SuspendLayout();
             contextMenuStripMain.SuspendLayout();
             SuspendLayout();
@@ -101,7 +107,7 @@
             // 
             // listViewMain
             // 
-            listViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderAumid, columnHeaderPath });
+            listViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderAumid, columnHeaderDate, columnHeaderPath });
             listViewMain.ContextMenuStrip = contextMenuStripMain;
             listViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
             listViewMain.FullRowSelect = true;
@@ -112,35 +118,73 @@
             listViewMain.TabIndex = 1;
             listViewMain.UseCompatibleStateImageBehavior = false;
             listViewMain.View = System.Windows.Forms.View.Details;
+            listViewMain.DoubleClick += ListViewMain_DoubleClick;
             // 
             // columnHeaderAumid
             // 
             columnHeaderAumid.Text = "Application User Model ID";
             columnHeaderAumid.Width = 200;
             // 
+            // columnHeaderDate
+            // 
+            columnHeaderDate.Text = "Last Modified Date";
+            columnHeaderDate.Width = 140;
+            // 
             // columnHeaderPath
             // 
             columnHeaderPath.Text = "Path";
             columnHeaderPath.Width = 300;
+            // 
+            // contextMenuStripMain
+            // 
+            contextMenuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { removeToolStripMenuItem, toolStripSeparator1, openLocationToolStripMenuItem, runFileToolStripMenuItem, toolStripSeparator2, removeAllDeletedFilesToolStripMenuItem });
+            contextMenuStripMain.Name = "contextMenuStripMain";
+            contextMenuStripMain.Size = new System.Drawing.Size(269, 104);
+            contextMenuStripMain.Opening += ContextMenuStripMain_Opening;
+            // 
+            // removeToolStripMenuItem
+            // 
+            removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            removeToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            removeToolStripMenuItem.Text = "Remove";
+            removeToolStripMenuItem.Click += RemoveToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(265, 6);
+            // 
+            // openLocationToolStripMenuItem
+            // 
+            openLocationToolStripMenuItem.Name = "openLocationToolStripMenuItem";
+            openLocationToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            openLocationToolStripMenuItem.Text = "Open location";
+            openLocationToolStripMenuItem.Click += OpenLocationToolStripMenuItem_Click;
+            // 
+            // runFileToolStripMenuItem
+            // 
+            runFileToolStripMenuItem.Name = "runFileToolStripMenuItem";
+            runFileToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            runFileToolStripMenuItem.Text = "Run file";
+            runFileToolStripMenuItem.Click += RunFileToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(265, 6);
+            // 
+            // removeAllDeletedFilesToolStripMenuItem
+            // 
+            removeAllDeletedFilesToolStripMenuItem.Name = "removeAllDeletedFilesToolStripMenuItem";
+            removeAllDeletedFilesToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            removeAllDeletedFilesToolStripMenuItem.Text = "Remove shortcuts for all deleted files";
+            removeAllDeletedFilesToolStripMenuItem.Click += RemoveAllDeletedFilesToolStripMenuItem_Click;
             // 
             // imageListIcons
             // 
             imageListIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             imageListIcons.ImageSize = new System.Drawing.Size(16, 16);
             imageListIcons.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // contextMenuStripMain
-            // 
-            contextMenuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { removeToolStripMenuItem });
-            contextMenuStripMain.Name = "contextMenuStripMain";
-            contextMenuStripMain.Size = new System.Drawing.Size(118, 26);
-            // 
-            // removeToolStripMenuItem
-            // 
-            removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            removeToolStripMenuItem.Text = "Remove";
-            removeToolStripMenuItem.Click += RemoveToolStripMenuItem_Click;
             // 
             // Main
             // 
@@ -175,5 +219,11 @@
         private System.Windows.Forms.ImageList imageListIcons;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripMain;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeaderDate;
+        private System.Windows.Forms.ToolStripMenuItem openLocationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem runFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeAllDeletedFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

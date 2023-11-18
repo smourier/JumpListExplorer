@@ -15,6 +15,7 @@ namespace JumpListExplorer
         public Main()
         {
             InitializeComponent();
+            Icon = Resources.JumpListExplorerIcon;
             LoadApplicationUserModelIDs();
             listViewMain.ListViewItemSorter = new ColumnSorter();
             listViewMain.ColumnClick += (s, e) => { ((ColumnSorter)listViewMain.ListViewItemSorter).HandleClick(listViewMain, e.Column); };
@@ -65,17 +66,36 @@ namespace JumpListExplorer
                     }
 
                     lvi.Tag = new Model(aumid, item);
+                    lvi.SubItems.Add(item.DateModified?.ToString("yyyy/MM/dd HH:mm:ss"));
                     lvi.SubItems.Add(item.SIGDN_DESKTOPABSOLUTEPARSING);
                 }
             }
 
             listViewMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            Text = $"{WinformsUtilities.ApplicationName} - {listViewMain.Items.Count} items";
         }
 
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
-        private void AboutWindowsJumpListExplorerToolStripMenuItem_Click(object sender, EventArgs e) => this.ShowMessage(Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyTitleAttribute>()!.Title + " - " + (IntPtr.Size == 4 ? "32" : "64") + "-bit" + Environment.NewLine + "Copyright (C) 2022-" + DateTime.Now.Year + " Simon Mourier. All rights reserved.");
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e) => LoadApplicationUserModelIDs();
-        private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveAllDeleted()
+        {
+            foreach (var aumid in AutomaticDestinationList.EnumerateAppUserModelIDs().OrderBy(i => i))
+            {
+                var list = new List<Item>();
+                foreach (var item in AutomaticDestinationList.GetItems(aumid).OrderBy(i => i.SIGDN_DESKTOPABSOLUTEPARSING))
+                {
+                    var path = item.SIGDN_FILESYSPATH;
+                    if (path != null && !Directory.Exists(item.SIGDN_FILESYSPATH) && !File.Exists(item.SIGDN_FILESYSPATH))
+                    {
+                        list.Add(item);
+                    }
+                }
+
+                AutomaticDestinationList.RemoveItems(aumid, list);
+            }
+
+            LoadApplicationUserModelIDs();
+        }
+
+        private List<Model> GetSelection()
         {
             var list = new List<Model>();
             foreach (var lvi in listViewMain.SelectedItems.OfType<ListViewItem>())
@@ -85,7 +105,37 @@ namespace JumpListExplorer
                     list.Add(model);
                 }
             }
+            return list;
+        }
 
+        private string? GetParentPath()
+        {
+            var list = GetSelection();
+            if (list.Count == 1 && list[0].Item.Parent?.SIGDN_FILESYSPATH != null)
+                return list[0].Item.Parent?.SIGDN_FILESYSPATH;
+
+            return null;
+        }
+
+        private string? GetPath()
+        {
+            var list = GetSelection();
+            if (list.Count == 1 && list[0].Item.SIGDN_FILESYSPATH != null)
+                return list[0].Item.SIGDN_FILESYSPATH;
+
+            return null;
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
+        private void AboutWindowsJumpListExplorerToolStripMenuItem_Click(object sender, EventArgs e) => this.ShowMessage(Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyTitleAttribute>()!.Title + " - " + (IntPtr.Size == 4 ? "32" : "64") + "-bit" + Environment.NewLine + "Copyright (C) 2022-" + DateTime.Now.Year + " Simon Mourier. All rights reserved.");
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e) => LoadApplicationUserModelIDs();
+        private void OpenLocationToolStripMenuItem_Click(object sender, EventArgs e) => WindowsUtilities.OpenExplorer(GetParentPath());
+        private void ListViewMain_DoubleClick(object sender, EventArgs e) => WindowsUtilities.OpenFile(GetPath());
+        private void RunFileToolStripMenuItem_Click(object sender, EventArgs e) => WindowsUtilities.OpenFile(GetPath());
+        private void RemoveAllDeletedFilesToolStripMenuItem_Click(object sender, EventArgs e) => RemoveAllDeleted();
+        private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var list = GetSelection();
             if (list.Count == 0)
                 return;
 
@@ -110,6 +160,37 @@ namespace JumpListExplorer
             if (count > 0)
             {
                 LoadApplicationUserModelIDs();
+            }
+        }
+
+        private void ContextMenuStripMain_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            runFileToolStripMenuItem.Text = "Run File";
+            runFileToolStripMenuItem.Enabled = false;
+            openLocationToolStripMenuItem.Text = "Open Location";
+            openLocationToolStripMenuItem.Enabled = false;
+
+            var selection = GetSelection();
+            if (selection.Count > 1)
+            {
+                removeToolStripMenuItem.Text = $"Remove {selection.Count} shortcuts";
+            }
+            else
+            {
+                var path = GetPath();
+                if (path != null)
+                {
+                    runFileToolStripMenuItem.Text = $"Run '{path}'";
+                    runFileToolStripMenuItem.Enabled = true;
+                    removeToolStripMenuItem.Text = $"Remove '{path}' shortcut";
+                }
+            }
+
+            var parentPath = GetParentPath();
+            if (parentPath != null)
+            {
+                openLocationToolStripMenuItem.Text = $"Open '{parentPath}'";
+                openLocationToolStripMenuItem.Enabled = true;
             }
         }
 

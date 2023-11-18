@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using JumpListExplorer.Interop;
 using JumpListExplorer.Utilities;
@@ -16,6 +17,7 @@ namespace JumpListExplorer.Shell
             ArgumentNullException.ThrowIfNull(item, nameof(shellItem));
             _shellItem = item;
             _shellItem2 = (IShellItem2)shellItem!;
+            _properties = new(() => GetProperties(GETPROPERTYSTOREFLAGS.GPS_DEFAULT));
         }
 
         public object NativeObject => _shellItem;
@@ -41,6 +43,9 @@ namespace JumpListExplorer.Shell
         public string? ItemType => GetProperty<string>(PROPERTYKEY.System.ItemType);
         public string? ItemTypeText => GetProperty<string>(PROPERTYKEY.System.ItemTypeText);
 
+        private readonly Lazy<IReadOnlyDictionary<PROPERTYKEY, object?>> _properties;
+        public IReadOnlyDictionary<PROPERTYKEY, object?> Properties => _properties.Value;
+
         public object? GetProperty(PROPERTYKEY pk, bool throwOnError = false)
         {
             using var pv = new PROPVARIANT();
@@ -60,6 +65,26 @@ namespace JumpListExplorer.Shell
                 return t;
 
             return Conversions.ChangeType(value, defaultValue);
+        }
+
+        public IReadOnlyDictionary<PROPERTYKEY, object?> GetProperties(GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT)
+        {
+            var dic = new Dictionary<PROPERTYKEY, object?>();
+            _shellItem2.GetPropertyStore(flags, typeof(IPropertyStore).GUID, out var obj);
+            if (obj is IPropertyStore store)
+            {
+                store.GetCount(out var count);
+                for (var i = 0; i < count; i++)
+                {
+                    if (store.GetAt(i, out var pk).IsSuccess)
+                    {
+                        using var pv = new PROPVARIANT();
+                        store.GetValue(ref pk, pv);
+                        dic[pk] = pv.Value;
+                    }
+                }
+            }
+            return dic;
         }
 
         public override string ToString() => SIGDN_NORMALDISPLAY;

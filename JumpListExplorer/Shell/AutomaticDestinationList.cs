@@ -40,6 +40,9 @@ namespace JumpListExplorer.Shell
             ArgumentNullException.ThrowIfNull(aumid);
             ArgumentNullException.ThrowIfNull(items);
 
+            if (!items.Any())
+                return 0;
+
             var list = (IAutomaticDestinationList)new CLSID_AutomaticDestinationList();
             var hr = list.Initialize(aumid, null, null);
             if (hr.IsError)

@@ -6,7 +6,12 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<ApplicationIcon>JumpListExplorer.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="JumpListExplorer.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Resources.Designer.cs">
