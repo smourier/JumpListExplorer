@@ -47,8 +47,7 @@ namespace JumpListExplorer.Shell
             var hr = list.Initialize(aumid, null, null);
             if (hr.IsError)
                 return 0;
-
-            hr = list.GetList(DESTLISTTYPE.RECENT, int.MaxValue, GETDESTLISTFLAGS.NONE, typeof(IObjectCollection).GUID, out var coll);
+            hr = list.GetList(DESTLISTTYPE.RECENT, int.MaxValue, GETDESTLISTFLAGS.NONE, typeof(IObjectCollection).GUID, out _);
             if (hr.IsError)
                 return 0;
 
