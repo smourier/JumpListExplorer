@@ -20,7 +20,7 @@ namespace JumpListExplorer.Shell
                 yield break;
 
             hr = list.GetList(DESTLISTTYPE.RECENT, int.MaxValue, GETDESTLISTFLAGS.NONE, typeof(IObjectCollection).GUID, out var coll);
-            if (hr.IsError)
+            if (hr.IsError || coll == null)
                 yield break;
 
             coll.GetCount(out var count);
