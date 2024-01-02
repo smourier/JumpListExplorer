@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
-[assembly: AssemblyCopyright("Copyright (C) 2022-2023 Simon Mourier. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright (C) 2022-2024 Simon Mourier. All rights reserved.")]
 [assembly: AssemblyTitle("Windows Jump List Explorer")]
 #if DEBUG
 [assembly: AssemblyConfiguration("DEBUG")]
